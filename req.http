@@ -1,0 +1,38 @@
+GET http://localhost:3000/
+
+### POST /auth/register
+
+POST http://localhost:3000/auth/register
+content-type: application/json
+
+{
+    "username": "admin",
+    "email": "admin@example.com",
+    "password": "password"
+}
+
+### POST /auth/login
+
+POST http://localhost:3000/auth/login
+content-type: application/json
+
+{
+    "email": "admin@example.com",
+    "password": "newpassword"
+}
+
+### PATCH /users/:id/password
+
+PATCH http://localhost:3000/users/1/password
+content-type: application/json
+cookie: 
+
+{
+    "old_password": "password",
+    "new_password": "newpassword"
+}
+
+
+### DELETE /users/:id
+DELETE http://localhost:3000/users/1
+cookie: 

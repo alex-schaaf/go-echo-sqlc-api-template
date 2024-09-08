@@ -5,7 +5,6 @@ import (
 	"app/api/users"
 	"app/db"
 	"app/lib"
-	libAuth "app/lib/auth"
 	"app/lib/config"
 	"database/sql"
 	"fmt"
@@ -34,17 +33,8 @@ func main() {
 
 	e := lib.GetEchoInstance()
 
-	authHandler := auth.NewAuthHandler(queries, config)
-
-	e.POST("/auth/login", authHandler.LoginHandler)
-	e.POST("/auth/logout", authHandler.LogoutHandler)
-	e.POST("/auth/register", authHandler.RegisterHandler)
-
-	usersHandler := users.NewUsersHandler(queries, config)
-	usersGroup := e.Group("/users")
-	usersGroup.Use(libAuth.CookieAuthMiddleware(config.JWT_SECRET))
-	usersGroup.PATCH("/:user_id/password", usersHandler.UpdateUserPasswordHandler)
-	usersGroup.DELETE("/:user_id", usersHandler.DeleteUserHandler)
+	auth.AddAuthRouter(e, queries, config)
+	users.AddUsersRouter(e, queries, config)
 
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, World!")

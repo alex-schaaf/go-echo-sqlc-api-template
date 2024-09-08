@@ -8,8 +8,9 @@ import (
 )
 
 type Config struct {
-	DB_PATH string
-	PORT    int
+	DB_PATH    string
+	PORT       int
+	JWT_SECRET string
 }
 
 // InitConfig initializes the Config struct with the environment variables
@@ -26,8 +27,9 @@ func InitConfig() *Config {
 	}
 
 	config := &Config{
-		DB_PATH: os.Getenv("DB_PATH"),
-		PORT:    port,
+		DB_PATH:    os.Getenv("DB_PATH"),
+		PORT:       port,
+		JWT_SECRET: os.Getenv("JWT_SECRET"),
 	}
 
 	return config

@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"app/lib/config"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -10,15 +11,16 @@ import (
 
 func TestCookieAuthMiddleware(t *testing.T) {
 	e := echo.New()
+	config := config.Config{JWT_SECRET: "jwtSecret"}
 
 	testHandler := func(c echo.Context) error {
 		return c.String(http.StatusOK, "OK")
 	}
 
-	e.GET("/", testHandler, CookieAuthMiddleware)
+	e.GET("/", testHandler, CookieAuthMiddleware(config.JWT_SECRET))
 
 	req := httptest.NewRequest(http.MethodGet, "/", nil)
-	cookie, err := GenerateTokenCookie(1)
+	cookie, err := GenerateTokenCookie(config.JWT_SECRET, 1)
 	if err != nil {
 		t.Fatal(err)
 	}

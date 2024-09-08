@@ -42,7 +42,7 @@ func main() {
 
 	usersHandler := users.NewUsersHandler(queries, config)
 	usersGroup := e.Group("/users")
-	usersGroup.Use(libAuth.CookieAuthMiddleware)
+	usersGroup.Use(libAuth.CookieAuthMiddleware(config.JWT_SECRET))
 	usersGroup.PATCH("/:user_id/password", usersHandler.UpdateUserPasswordHandler)
 	usersGroup.DELETE("/:user_id", usersHandler.DeleteUserHandler)
 

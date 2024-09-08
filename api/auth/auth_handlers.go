@@ -47,7 +47,7 @@ func (h *AuthHandler) LoginHandler(e echo.Context) error {
 	}
 
 	// Generate token and add as cookie
-	cookie, err := auth.GenerateTokenCookie(user.ID)
+	cookie, err := auth.GenerateTokenCookie(h.Config.JWT_SECRET, user.ID)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "Failed to create token cookie")
 	}

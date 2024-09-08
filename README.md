@@ -1,6 +1,6 @@
 # go-echo-sqlc-api-template
 
-This template provides a robust starting point fœor building RESTful APIs using the Echo framework and SQLC for database interactions in Go. It includes a well-structured project layout, essential middleware, and example handlers for authentication and user management.
+A simple Go API project template built on the echo framework and sqlc.
 
 ##  Key Features
 - [Echo Framework](https://echo.labstack.com/): Fast and scalable web framework for building APIs.

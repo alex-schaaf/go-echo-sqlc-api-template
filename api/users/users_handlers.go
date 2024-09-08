@@ -2,10 +2,10 @@ package users
 
 import (
 	"app/db"
+	"app/lib"
 	"app/lib/auth"
 	"app/lib/config"
 	"net/http"
-	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -37,14 +37,8 @@ func bindAndValidatePasswordRequest(e echo.Context) (UpdateUserPasswordDto, erro
 	return req, nil
 }
 
-func GetUserID(e echo.Context) int64 {
-	userIDStr := e.Get("user_id").(string)
-	userID, _ := strconv.ParseInt(userIDStr, 10, 64)
-	return userID
-}
-
 func (h *UsersHandler) UpdateUserPasswordHandler(e echo.Context) error {
-	userID := GetUserID(e)
+	userID := lib.GetUserID(e)
 
 	req, err := bindAndValidatePasswordRequest(e)
 	if err != nil {
@@ -76,7 +70,7 @@ func (h *UsersHandler) UpdateUserPasswordHandler(e echo.Context) error {
 }
 
 func (h *UsersHandler) DeleteUserHandler(e echo.Context) error {
-	userID := GetUserID(e)
+	userID := lib.GetUserID(e)
 
 	if err := h.Queries.DeleteUser(e.Request().Context(), int64(userID)); err != nil {
 		return e.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to delete user"})

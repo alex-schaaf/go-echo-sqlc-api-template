@@ -2,6 +2,7 @@ package users
 
 import (
 	"app/db"
+	"app/lib"
 	"app/lib/auth"
 	"app/lib/config"
 	"app/lib/test"
@@ -97,7 +98,7 @@ func TestGetUserID(t *testing.T) {
 	c := e.NewContext(req, rec)
 	c.Set("user_id", "1")
 
-	userID := GetUserID(c)
+	userID := lib.GetUserID(c)
 	if userID != 1 {
 		t.Errorf("Expected user ID 1, got %d", userID)
 	}

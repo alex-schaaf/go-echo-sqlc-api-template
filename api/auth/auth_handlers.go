@@ -3,6 +3,7 @@ package auth
 import (
 	"app/db"
 	"app/lib/auth"
+	"app/lib/config"
 	"net/http"
 	"time"
 
@@ -11,10 +12,11 @@ import (
 
 type AuthHandler struct {
 	Queries *db.Queries
+	Config  *config.Config
 }
 
-func NewAuthHandler(queries *db.Queries) *AuthHandler {
-	return &AuthHandler{Queries: queries}
+func NewAuthHandler(queries *db.Queries, config *config.Config) *AuthHandler {
+	return &AuthHandler{Queries: queries, Config: config}
 }
 
 func (h *AuthHandler) LoginHandler(e echo.Context) error {

@@ -3,6 +3,7 @@ package auth
 import (
 	"app/db"
 	"app/lib/auth"
+	"app/lib/config"
 	"app/lib/test"
 	"context"
 	"net/http"
@@ -17,8 +18,9 @@ import (
 
 func TestAuthHandler_RegisterHandler(t *testing.T) {
 	e, queries := test.SetupTest()
+	config := &config.Config{}
 
-	authHandler := NewAuthHandler(queries)
+	authHandler := NewAuthHandler(queries, config)
 	registerJSON := `{"username":"username","email":"user@example.com","password":"password"}`
 	req := httptest.NewRequest(http.MethodPost, "/", strings.NewReader(registerJSON))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
@@ -40,8 +42,9 @@ func TestAuthHandler_RegisterHandler(t *testing.T) {
 func TestAuthHandler_LoginHandler(t *testing.T) {
 	e, queries := test.SetupTest()
 	ctx := context.Background()
+	config := &config.Config{}
 
-	authHandler := NewAuthHandler(queries)
+	authHandler := NewAuthHandler(queries, config)
 	password := "password"
 	passwordHash, _ := auth.HashPassword(password)
 	_, err := queries.CreateUser(ctx, db.CreateUserParams{
@@ -83,9 +86,10 @@ func TestAuthHandler_LoginHandler(t *testing.T) {
 }
 
 func TestAuthHandler_LogoutHandler(t *testing.T) {
-	e, _ := test.SetupTest()
+	e, queries := test.SetupTest()
+	config := &config.Config{}
 
-	authHandler := NewAuthHandler(nil)
+	authHandler := NewAuthHandler(queries, config)
 	req := httptest.NewRequest(http.MethodPost, "/", nil)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)

@@ -3,6 +3,7 @@ package users
 import (
 	"app/db"
 	"app/lib/auth"
+	"app/lib/config"
 	"net/http"
 	"strconv"
 
@@ -11,10 +12,11 @@ import (
 
 type UsersHandler struct {
 	Queries *db.Queries
+	Config  *config.Config
 }
 
-func NewUsersHandler(queries *db.Queries) *UsersHandler {
-	return &UsersHandler{Queries: queries}
+func NewUsersHandler(queries *db.Queries, config *config.Config) *UsersHandler {
+	return &UsersHandler{Queries: queries, Config: config}
 }
 
 func bindAndValidatePasswordRequest(e echo.Context) (UpdateUserPasswordDto, error) {

@@ -34,13 +34,13 @@ func main() {
 
 	e := lib.GetEchoInstance()
 
-	authHandler := auth.NewAuthHandler(queries)
+	authHandler := auth.NewAuthHandler(queries, config)
 
 	e.POST("/auth/login", authHandler.LoginHandler)
 	e.POST("/auth/logout", authHandler.LogoutHandler)
 	e.POST("/auth/register", authHandler.RegisterHandler)
 
-	usersHandler := users.NewUsersHandler(queries)
+	usersHandler := users.NewUsersHandler(queries, config)
 	usersGroup := e.Group("/users")
 	usersGroup.Use(libAuth.CookieAuthMiddleware)
 	usersGroup.PATCH("/:user_id/password", usersHandler.UpdateUserPasswordHandler)

@@ -3,6 +3,7 @@ package users
 import (
 	"app/db"
 	"app/lib/auth"
+	"app/lib/config"
 	"app/lib/test"
 	"context"
 	"net/http"
@@ -18,6 +19,7 @@ import (
 func TestUsersHandler_UpdateUserPasswordHandler(t *testing.T) {
 	e, queries := test.SetupTest()
 	ctx := context.Background()
+	config := &config.Config{}
 
 	password := "oldPassword"
 	passwordHash, _ := auth.HashPassword(password)
@@ -30,7 +32,7 @@ func TestUsersHandler_UpdateUserPasswordHandler(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	usersHandler := NewUsersHandler(queries)
+	usersHandler := NewUsersHandler(queries, config)
 	updatePasswordJSON := `{"old_password":"oldPassword","new_password":"newPassword"}`
 	req := httptest.NewRequest(http.MethodPatch, "/", strings.NewReader(updatePasswordJSON))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
@@ -104,6 +106,7 @@ func TestGetUserID(t *testing.T) {
 func TestUsersHandler_DeleteUserHandler(t *testing.T) {
 	e, queries := test.SetupTest()
 	ctx := context.Background()
+	config := &config.Config{}
 
 	password := "oldPassword"
 	passwordHash, _ := auth.HashPassword(password)
@@ -116,7 +119,7 @@ func TestUsersHandler_DeleteUserHandler(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	usersHandler := NewUsersHandler(queries)
+	usersHandler := NewUsersHandler(queries, config)
 	req := httptest.NewRequest(http.MethodDelete, "/", nil)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)

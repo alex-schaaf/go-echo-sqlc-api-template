@@ -14,21 +14,13 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-func initializeDatabase(config *config.Config) *sql.DB {
-	db, err := sql.Open("sqlite3", config.DB_PATH)
-	if err != nil {
-		panic(err)
-	}
-	return db
-}
-
 func getQueries(conn *sql.DB) *db.Queries {
 	return db.New(conn)
 }
 
 func main() {
 	config := config.InitConfig()
-	conn := initializeDatabase(config)
+	conn := lib.InitializeDatabase(config)
 	queries := getQueries(conn)
 
 	e := lib.GetEchoInstance()
